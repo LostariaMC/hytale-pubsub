@@ -12,6 +12,9 @@ public class MessageEnvelope {
     @NotBlank
     private String type;
 
+    @NotBlank
+    private String producer;
+
     private JsonNode payload;
 
 }
