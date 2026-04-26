@@ -10,6 +10,9 @@ import tools.jackson.databind.JsonNode;
 public class MessageEnvelope {
 
     @NotBlank
+    private String consumer;
+
+    @NotBlank
     private String type;
 
     @NotBlank

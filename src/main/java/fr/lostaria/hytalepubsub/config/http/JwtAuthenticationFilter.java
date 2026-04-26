@@ -1,6 +1,7 @@
-package fr.lostaria.hytalepubsub.config;
+package fr.lostaria.hytalepubsub.config.http;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import fr.lostaria.hytalepubsub.config.JwtVerifierService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
