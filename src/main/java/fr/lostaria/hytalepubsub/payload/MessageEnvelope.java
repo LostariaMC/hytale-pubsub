@@ -1,6 +1,5 @@
 package fr.lostaria.hytalepubsub.payload;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import tools.jackson.databind.JsonNode;
@@ -9,13 +8,10 @@ import tools.jackson.databind.JsonNode;
 @Setter
 public class MessageEnvelope {
 
-    @NotBlank
     private String consumer;
 
-    @NotBlank
     private String type;
 
-    @NotBlank
     private String producer;
 
     private JsonNode payload;

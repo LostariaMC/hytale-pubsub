@@ -8,7 +8,6 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
-import org.springframework.web.servlet.HandlerMapping;
 
 import java.util.Map;
 
@@ -28,10 +27,13 @@ public class WsHandshakeInterceptor implements HandshakeInterceptor {
             WebSocketHandler wsHandler,
             Map<String, Object> attributes
     ) {
-        Map<String, String> uriVars = (Map<String, String>) attributes.get(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        if (uriVars != null) {
-            attributes.put("consumer", uriVars.get("consumer"));
+        String path = request.getURI().getPath();
+        String consumer = path.substring(path.lastIndexOf('/') + 1);
+        if (consumer.isBlank()) {
+            response.setStatusCode(HttpStatus.BAD_REQUEST);
+            return false;
         }
+        attributes.put("consumer", consumer);
 
         String authHeader = request.getHeaders().getFirst("Authorization");
         String token = (authHeader != null && authHeader.startsWith("Bearer "))

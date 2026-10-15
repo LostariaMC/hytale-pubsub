@@ -1,6 +1,8 @@
 package fr.lostaria.hytalepubsub.services;
 
 import fr.lostaria.hytalepubsub.payload.MessageEnvelope;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -13,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class MessageService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
+
     private final Map<String, BlockingQueue<MessageEnvelope>> queues = new ConcurrentHashMap<>();
 
     private BlockingQueue<MessageEnvelope> queue(String consumer) {
@@ -20,7 +24,9 @@ public class MessageService {
     }
 
     public void send(String consumer, MessageEnvelope message) {
-        queue(consumer).offer(message);
+        BlockingQueue<MessageEnvelope> queue = queue(consumer);
+        queue.offer(message);
+        LOGGER.info("QUEUED {} -> {} type={} pending={}", message.getProducer(), consumer, message.getType(), queue.size());
     }
 
     public MessageEnvelope waitNext(String consumer, Duration timeout) {
